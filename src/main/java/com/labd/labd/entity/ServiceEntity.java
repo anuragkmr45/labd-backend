@@ -6,16 +6,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Data
-@Entity
-@Table(name = "bookings")
+// @Data
+// @Entity
+// @Table(name = "services")
 public class ServiceEntity {
-    private String bookingId;
-    private String userId;
-    private List<String> serviceId;
-    private String date;
-    private String time;
-    private String reportStatus;
-    private String paymentStatus;
-    private String colleectionLocation;   
+    // private String serviceId;
+    // private String serviceName;
+    // private String serviceDesc;
+    // private int servicePricing;
 }
