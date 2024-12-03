@@ -16,15 +16,15 @@ public class AuthController {
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupRequest request) {
-        return authService.signup(request.getName(), request.getEmail(), request.getPassword());
+        return authService.signup(request.getName(), request.getEmail(), request.getPassword(), request.getDob(), request.getBloodgrp());
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public AuthResponse login(@RequestBody AuthRequest request) {
         return authService.login(request);
     }
  
-    @PostMapping("/logout")
+    @PostMapping("/signout")
     public String logout() {
         return "Logout successful";
     }

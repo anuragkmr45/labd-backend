@@ -25,7 +25,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String signup(String name, String email, String password) {
+    public String signup(String name, String email, String password, String dob, String bloodgrp) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
@@ -33,6 +33,8 @@ public class AuthService {
         user.setName(name);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
+        user.setDob(dob);
+        user.setBloodgrp(bloodgrp);
         userRepository.save(user);
         return jwtUtil.generateToken(email);
     }
