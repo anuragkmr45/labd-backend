@@ -1,5 +1,7 @@
 package com.labd.labd.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,10 +10,10 @@ import lombok.Data;
 @Table(name = "users")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @Column(unique = true, nullable = false)
@@ -25,4 +27,7 @@ public class UserEntity {
     
     @Column(nullable = false)
     private String bloodgrp;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BookingEntity> bookings;
 }

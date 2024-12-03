@@ -1,17 +1,27 @@
 package com.labd.labd.entity;
 
+import jakarta.persistence.*;
+import lombok.Data;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Data;
-
-// @Data
-// @Entity
-// @Table(name = "services")
+@Data
+@Entity
+@Table(name = "services")
 public class ServiceEntity {
-    // private String serviceId;
-    // private String serviceName;
-    // private String serviceDesc;
-    // private int servicePricing;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long serviceId;
+
+    @Column(nullable = false)
+    private String serviceName;
+
+    @Column(nullable = false)
+    private String desc;
+
+    @Column(nullable = false)
+    private Double price;
+
+    @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
+    private List<BookingEntity> bookings;
 }

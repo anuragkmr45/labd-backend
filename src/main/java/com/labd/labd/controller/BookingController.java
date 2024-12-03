@@ -1,21 +1,44 @@
 package com.labd.labd.controller;
 
 import com.labd.labd.dto.req.AddBookingRequest;
-import com.labd.labd.dto.req.AuthRequest;
-import com.labd.labd.dto.req.SignupRequest;
-import com.labd.labd.dto.res.AuthResponse;
-import com.labd.labd.service.AuthService;
-
+import com.labd.labd.dto.req.DeleteBookingRequest;
+import com.labd.labd.dto.res.BookingResponse;
+// import com.labd.labd.entity.BookingEntity;
+import com.labd.labd.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/v1/booking")
-public class BookingController {
-    // @Autowired
-    // private AuthService authService;
+import java.util.List;
 
-    // public String booking(@RequestBody AddBookingRequest request) {
-    //     return authService.booking(request.getAddressId(), request.getDate(), request.getTime(), request.getContactId(), request.getStatusId(), request.getPaymentId());
-    // }
+@RestController
+@RequestMapping("/api/v1/book")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    @PostMapping("/add-booking")
+    public ResponseEntity<String> addBooking(@RequestBody AddBookingRequest request, @RequestHeader("Authorization") String token) {
+        bookingService.addBooking(request, token);
+        return ResponseEntity.ok("Booking added");
+    }
+
+    @PostMapping("/cancel-booking")
+    public ResponseEntity<String> deleteBooking(@RequestBody DeleteBookingRequest request, @RequestHeader("Authorization") String token) {
+        bookingService.cancelBooking(request.getBookingId(), token);
+        return ResponseEntity.ok("Booking cancelled");
+    }
+
+    @PostMapping("/my-bookings")
+    public ResponseEntity<List<BookingResponse>> getAllBookings(@RequestHeader("Authorization") String token) {
+        List<BookingResponse> bookings = bookingService.getAllBookings(token);
+        return ResponseEntity.ok(bookings);
+    }
+
+    @PostMapping("/track-booking")
+    public ResponseEntity<BookingResponse> trackBooking(@RequestBody DeleteBookingRequest request, @RequestHeader("Authorization") String token) {
+        BookingResponse booking = bookingService.trackBooking(request.getBookingId(), token);
+        return ResponseEntity.ok(booking);
+    }
 }

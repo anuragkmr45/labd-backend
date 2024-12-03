@@ -1,32 +1,30 @@
 package com.labd.labd.entity;
 
 import java.util.List;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "bookings")
+@Table(name = "bookings") // Table for BookingEntity
 public class BookingEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private String bookingId;
-    
-    @Column(nullable = false)
-    private String userId;
+    @Column(name = "booking_id", nullable = false, unique = true)
+    private long bookingId; // Primary Key
 
-    @Column(nullable = false, unique = true)
-    @ElementCollection
-    private List<String> serviceIds;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false) // Foreign Key to UserEntity
+    private UserEntity user;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "booking_services", // Join table for bookings and services
+        joinColumns = @JoinColumn(name = "booking_id"),
+        inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    private List<ServiceEntity> services; // Many-to-Many relationship with ServiceEntity
 
     @Column(nullable = false)
     private String date;
@@ -34,7 +32,7 @@ public class BookingEntity {
     @Column(nullable = false)
     private String time;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 50)
     @Enumerated(EnumType.STRING)
     private ReportStatus reportStatus;
 
@@ -45,14 +43,15 @@ public class BookingEntity {
     @Column(nullable = false)
     private String collectionLocation;
 
+    // Enums for statuses
     public enum ReportStatus {
+        BOOKING_DONE,
         SAMPLE_COLLECTED,
         SAMPLE_RECEIVED,
         SAMPLE_REVIEWED,
         REPORT_DELIVERED
     }
 
-    // Enum for Payment Status
     public enum PaymentStatus {
         PENDING,
         DONE,
