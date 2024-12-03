@@ -43,7 +43,6 @@ public class BookingEntity {
     @Column(nullable = false)
     private String collectionLocation;
 
-    // Enums for statuses
     public enum ReportStatus {
         BOOKING_DONE,
         SAMPLE_COLLECTED,

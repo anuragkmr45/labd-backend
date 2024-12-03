@@ -3,7 +3,6 @@ package com.labd.labd.controller;
 import com.labd.labd.dto.req.AddBookingRequest;
 import com.labd.labd.dto.req.DeleteBookingRequest;
 import com.labd.labd.dto.res.BookingResponse;
-// import com.labd.labd.entity.BookingEntity;
 import com.labd.labd.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
