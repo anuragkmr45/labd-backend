@@ -22,6 +22,6 @@ public class ServiceEntity {
     @Column(nullable = false)
     private Double price;
 
-    @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
-    private List<BookingEntity> bookings;
+    // @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
+    // private List<BookingEntity> bookings;
 }

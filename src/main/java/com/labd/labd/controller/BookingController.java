@@ -29,11 +29,11 @@ public class BookingController {
         return ResponseEntity.ok("Booking cancelled");
     }
 
-    @PostMapping("/my-bookings")
-    public ResponseEntity<List<BookingResponse>> getAllBookings(@RequestHeader("Authorization") String token) {
-        List<BookingResponse> bookings = bookingService.getAllBookings(token);
-        return ResponseEntity.ok(bookings);
-    }
+    // @PostMapping("/my-bookings")
+    // public ResponseEntity<List<BookingResponse>> getAllBookings(@RequestHeader("Authorization") String token) {
+    //     List<BookingResponse> bookings = bookingService.getAllBookings(token);
+    //     return ResponseEntity.ok(bookings);
+    // }
 
     @PostMapping("/track-booking")
     public ResponseEntity<BookingResponse> trackBooking(@RequestBody DeleteBookingRequest request, @RequestHeader("Authorization") String token) {

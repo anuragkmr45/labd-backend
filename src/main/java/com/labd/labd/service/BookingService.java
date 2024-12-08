@@ -10,7 +10,7 @@ public interface BookingService {
 
     void cancelBooking(Long bookingId, String token);
 
-    List<BookingResponse> getAllBookings(String token);
+    // List<BookingResponse> getAllBookings(String token);
 
     BookingResponse trackBooking(Long bookingId, String token);
 }

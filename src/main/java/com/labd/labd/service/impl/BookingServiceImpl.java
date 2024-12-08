@@ -11,8 +11,8 @@ import com.labd.labd.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+// import java.util.List;
+// import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -32,7 +32,7 @@ public class BookingServiceImpl implements BookingService {
         UserEntity user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        BookingEntity booking = new BookingEntity();
+        BookingEntity booking = new BookingEntity();  
         booking.setUser(user);
         booking.setDate(request.getDate());
         booking.setTime(request.getTime());
@@ -51,16 +51,16 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.delete(booking);
     }
 
-    @Override
-    public List<BookingResponse> getAllBookings(String token) {
-        String userEmail = jwtUtil.extractEmail(token.substring(7));
-        UserEntity user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    // @Override
+    // public List<BookingResponse> getAllBookings(String token) {
+    //     String userEmail = jwtUtil.extractEmail(token.substring(7));
+    //     UserEntity user = userRepository.findByEmail(userEmail)
+    //             .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return user.getBookings().stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
+    //     return user.getBookings().stream()
+    //             .map(this::mapToResponse)
+    //             .collect(Collectors.toList());
+    // }
 
     @Override
     public BookingResponse trackBooking(Long bookingId, String token) {

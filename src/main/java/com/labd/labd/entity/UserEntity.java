@@ -28,6 +28,6 @@ public class UserEntity {
     @Column(nullable = false)
     private String bloodgrp;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<BookingEntity> bookings;
+    // @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    // private List<BookingEntity> bookings;
 }
