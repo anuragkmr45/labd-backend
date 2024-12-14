@@ -1,21 +1,22 @@
 package com.labd.labd.entity;
 
-import java.util.List;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
-@Table(name = "bookings") // Table for BookingEntity
+@Table(name = "bookings")
 public class BookingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "booking_id", nullable = false, unique = true)
-    private long bookingId; // Primary Key
+    private long bookingId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // Foreign Key to UserEntity
+    @JoinColumn(name = "user_id", nullable = false) // Foreign key to UserEntity
     private UserEntity user;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -32,7 +33,7 @@ public class BookingEntity {
     @Column(nullable = false)
     private String time;
 
-    @Column(nullable = false,length = 50)
+    @Column(nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
     private ReportStatus reportStatus;
 

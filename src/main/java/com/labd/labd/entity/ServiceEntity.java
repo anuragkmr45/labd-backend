@@ -17,12 +17,29 @@ public class ServiceEntity {
     @Column(name = "service_name", nullable = false)
     private String serviceName;
 
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    private String serviceDesc;
 
-    @Column(name = "price", nullable = false)
-    private Double price;
+    @ElementCollection
+    @CollectionTable(name = "test_parameters", joinColumns = @JoinColumn(name = "service_id"))
+    @Column(name = "test_parameter")
+    private List<String> testParameters;
 
-    // @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
-    // private List<BookingEntity> bookings;
+    @Column(name = "sample_type", nullable = false)
+    private String sampleType;
+
+    @Column(name = "tube_type", nullable = false)
+    private String tubeType;
+
+    @Column(name = "package_includes", nullable = false, columnDefinition = "TEXT")
+    private String packageIncludes;
+
+    @Column(name = "discounted_price", nullable = false)
+    private String discountedPrice;
+
+    @Column(name = "discount_percentage", nullable = false)
+    private String discountPercentage;
+
+    @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
+    private List<BookingEntity> bookings;
 }
