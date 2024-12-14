@@ -16,7 +16,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupRequest request) {
-        return authService.signup(request.getName(), request.getEmail(), request.getPassword(), request.getDob(), request.getBloodgrp());
+        return authService.signup(request.getName(), request.getEmail(), request.getPassword(), request.getPhoneNumber() , request.getDob(), request.getBloodgrp());
     }
 
     @PostMapping("/signin")

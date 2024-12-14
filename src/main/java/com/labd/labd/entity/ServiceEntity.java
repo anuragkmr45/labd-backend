@@ -11,15 +11,16 @@ public class ServiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "service_id", nullable = false, unique = true)
     private Long serviceId;
 
-    @Column(nullable = false)
+    @Column(name = "service_name", nullable = false)
     private String serviceName;
 
-    @Column(nullable = false)
-    private String desc;
+    @Column(name = "description", nullable = false)
+    private String description;
 
-    @Column(nullable = false)
+    @Column(name = "price", nullable = false)
     private Double price;
 
     // @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)

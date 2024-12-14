@@ -3,11 +3,11 @@ package com.labd.labd.dto.req;
 import lombok.Data;
 
 @Data
-public class SignupRequest {
-    private String name;
+public class UpdateUserRequest {
     private String email;
+    private String phoneNumber;
     private String password;
     private String dob;
     private String bloodgrp;
-    private String phoneNumber;
 }
+

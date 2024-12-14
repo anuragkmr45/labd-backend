@@ -11,6 +11,7 @@ import lombok.Data;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false, unique = true)
     private Long id;
     
     @Column(nullable = false)
@@ -19,15 +20,18 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
     
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
+    private String phoneNumber;
+    
+    @Column(nullable = false, unique = false)
     private String password;
     
-    @Column(nullable = false)
+    @Column()
     private String dob;
     
-    @Column(nullable = false)
+    @Column()
     private String bloodgrp;
 
-    // @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private List<BookingEntity> bookings;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BookingEntity> bookings;
 }
