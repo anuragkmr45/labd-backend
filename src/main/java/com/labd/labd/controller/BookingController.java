@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-// import java.util.List;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/book")
@@ -29,15 +29,15 @@ public class BookingController {
         return ResponseEntity.ok("Booking cancelled");
     }
 
-    // @PostMapping("/my-bookings")
-    // public ResponseEntity<List<BookingResponse>> getAllBookings(@RequestHeader("Authorization") String token) {
-    //     List<BookingResponse> bookings = bookingService.getAllBookings(token);
-    //     return ResponseEntity.ok(bookings);
-    // }
+    @GetMapping("/my-bookings")
+    public ResponseEntity<List<BookingResponse>> getAllBookings(@RequestHeader("Authorization") String token) {
+        List<BookingResponse> bookings = bookingService.getAllBookings(token);
+        return ResponseEntity.ok(bookings);
+    }
 
-    @PostMapping("/track-booking")
-    public ResponseEntity<BookingResponse> trackBooking(@RequestBody DeleteBookingRequest request, @RequestHeader("Authorization") String token) {
-        BookingResponse booking = bookingService.trackBooking(request.getBookingId(), token);
+    @GetMapping("/track-booking/{bookingId}")
+    public ResponseEntity<BookingResponse> trackBooking(@PathVariable Long bookingId, @RequestHeader("Authorization") String token) {
+        BookingResponse booking = bookingService.trackBooking(bookingId, token);
         return ResponseEntity.ok(booking);
     }
 }
