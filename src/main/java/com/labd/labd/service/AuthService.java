@@ -6,6 +6,8 @@ import com.labd.labd.entity.UserEntity;
 import com.labd.labd.repository.UserRepository;
 import com.labd.labd.util.JwtUtil;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String signup(String name, String email, String password, String phoneNumber ,String dob, String bloodgrp) {
+    public String signup(@Valid String name, String email, String password, String phoneNumber ,String dob, String bloodgrp) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email already exists");
         }

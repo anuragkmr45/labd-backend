@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/profile")
-// @Tag(name = "Profile APIs", description = "Manage user profile operations.")
 public class UserController {
 
     @Autowired
@@ -21,7 +20,6 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @DeleteMapping()
-    // @Operation(summary = "Delete Profile", description = "Delete the profile of the logged-in user.")
     public ResponseEntity<String> deleteProfile(@RequestHeader("Authorization") String token) {
         // Extract username from token
         String username = jwtUtil.extractEmail(token.substring(7));
@@ -30,7 +28,6 @@ public class UserController {
     }
 
     @GetMapping()
-    // @Operation(summary = "My Profile", description = "Retrieve the profile of the logged-in user.")
     public ResponseEntity<UserEntity> myProfile(@RequestHeader("Authorization") String token) {
         // Extract username from token
         String username = jwtUtil.extractEmail(token.substring(7));
@@ -40,7 +37,6 @@ public class UserController {
     }
 
     @PutMapping()
-    // @Operation(summary = "Update Profile", description = "Update the profile of the logged-in user.")
     public ResponseEntity<UserEntity> updateProfile(
             @RequestHeader("Authorization") String token,
             @RequestBody UpdateUserRequest updateProfileRequest) {

@@ -3,8 +3,10 @@ package com.labd.labd.service.impl;
 import com.labd.labd.dto.req.AddBookingRequest;
 import com.labd.labd.dto.res.BookingResponse;
 import com.labd.labd.entity.BookingEntity;
+import com.labd.labd.entity.ServiceEntity;
 import com.labd.labd.entity.UserEntity;
 import com.labd.labd.repository.BookingRepository;
+import com.labd.labd.repository.ServiceRepository;
 import com.labd.labd.repository.UserRepository;
 import com.labd.labd.service.BookingService;
 import com.labd.labd.util.JwtUtil;
@@ -21,6 +23,9 @@ public class BookingServiceImpl implements BookingService {
     private BookingRepository bookingRepository;
 
     @Autowired
+    private ServiceRepository serviceRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -32,11 +37,21 @@ public class BookingServiceImpl implements BookingService {
         UserEntity user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        BookingEntity booking = new BookingEntity();  
+        if (request.getServices() == null || request.getServices().isEmpty()) {
+            throw new RuntimeException("At least one service must be selected");
+        }
+
+        List<ServiceEntity> serviceEntities = serviceRepository.findAllById(request.getServices());
+        if (serviceEntities.size() != request.getServices().size()) {
+            throw new RuntimeException("One or more services are invalid");
+        }
+
+        BookingEntity booking = new BookingEntity();
         booking.setUser(user);
         booking.setDate(request.getDate());
         booking.setTime(request.getTime());
         booking.setCollectionLocation(request.getAddressId());
+        booking.setServices(serviceEntities);
         booking.setReportStatus(BookingEntity.ReportStatus.BOOKING_DONE);
         booking.setPaymentStatus(BookingEntity.PaymentStatus.PENDING);
 
