@@ -28,7 +28,8 @@ public class BookingEntity {
         joinColumns = @JoinColumn(name = "booking_id"),
         inverseJoinColumns = @JoinColumn(name = "service_id")
     )
-    private List<@NotNull(message = "Service cannot be null") ServiceEntity> services;
+    private List<ServiceEntity> services;
+    // private List<@NotNull(message = "Service cannot be null") ServiceEntity> services;
 
     @NotBlank(message = "Date cannot be blank")
     @Pattern(

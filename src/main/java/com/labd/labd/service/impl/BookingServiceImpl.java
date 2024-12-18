@@ -4,9 +4,11 @@ import com.labd.labd.dto.req.AddBookingRequest;
 import com.labd.labd.dto.res.BookingResponse;
 import com.labd.labd.entity.BookingEntity;
 import com.labd.labd.entity.ServiceEntity;
+import com.labd.labd.entity.TestParameterEntity;
 import com.labd.labd.entity.UserEntity;
 import com.labd.labd.repository.BookingRepository;
 import com.labd.labd.repository.ServiceRepository;
+import com.labd.labd.repository.TestParameterRepository;
 import com.labd.labd.repository.UserRepository;
 import com.labd.labd.service.BookingService;
 import com.labd.labd.util.JwtUtil;
@@ -21,6 +23,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private TestParameterRepository testParameterRepository;
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -72,8 +77,10 @@ public class BookingServiceImpl implements BookingService {
         UserEntity user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return user.getBookings().stream()
-                .map(this::mapToResponse)
+        List<BookingEntity> bookings = bookingRepository.findAllByUser(user);
+
+        return bookings.stream()
+                .map(this::mapToResponseWithServices)
                 .collect(Collectors.toList());
     }
 
@@ -81,18 +88,38 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse trackBooking(Long bookingId, String token) {
         BookingEntity booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
-        return mapToResponse(booking);
+        return mapToResponseWithServices(booking);
     }
 
-    private BookingResponse mapToResponse(BookingEntity booking) {
-        BookingResponse response = new BookingResponse();
-        response.setBookingId(booking.getBookingId());
-        response.setUserId(booking.getUser().getId().toString());
-        response.setDate(booking.getDate());
-        response.setTime(booking.getTime());
-        response.setReportStatus(booking.getReportStatus().toString());
-        response.setPaymentStatus(booking.getPaymentStatus().toString());
-        response.setCollectionLocation(booking.getCollectionLocation());
-        return response;
-    }
+
+private BookingResponse mapToResponseWithServices(BookingEntity booking) {
+    BookingResponse response = new BookingResponse();
+    response.setBookingId(booking.getBookingId());
+    response.setUserId(String.valueOf(booking.getUser().getId()));
+    response.setDate(booking.getDate());
+    response.setTime(booking.getTime());
+    response.setReportStatus(booking.getReportStatus().toString());
+    response.setPaymentStatus(booking.getPaymentStatus().toString());
+    response.setCollectionLocation(booking.getCollectionLocation());
+
+    // Fetch services and their test parameters
+    List<com.labd.labd.dto.res.ServiceDetails> serviceDetails = booking.getServices().stream().map(service -> {
+        com.labd.labd.dto.res.ServiceDetails details = new com.labd.labd.dto.res.ServiceDetails();
+        details.setServiceName(service.getServiceName());
+
+        // Fetch test parameters for this service
+        List<String> testParameters = testParameterRepository.findByServiceId(service.getServiceId())
+                .stream()
+                .map(TestParameterEntity::getTestParameter)
+                .collect(Collectors.toList());
+        details.setTestParameters(testParameters);
+
+        return details;
+    }).collect(Collectors.toList());
+
+    response.setServices(serviceDetails);
+    return response;
+}
+
+
 }
