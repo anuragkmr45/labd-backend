@@ -24,7 +24,7 @@ public class BookingController {
         return ResponseEntity.ok("Booking added");
     }
 
-    @PostMapping("/cancel-booking")
+    @DeleteMapping("/delete-booking")
     public ResponseEntity<String> deleteBooking(@RequestBody DeleteBookingRequest request, @RequestHeader("Authorization") String token) {
         bookingService.cancelBooking(request.getBookingId(), token);
         return ResponseEntity.ok("Booking cancelled");
