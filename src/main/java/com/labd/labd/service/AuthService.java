@@ -39,6 +39,7 @@ public class AuthService {
         user.setPhoneNumber(phoneNumber);
         user.setDob(dob);
         user.setBloodgrp(bloodgrp);
+        
         userRepository.save(user);
         return jwtUtil.generateToken(email);
     }
