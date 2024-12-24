@@ -38,11 +38,17 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+        } catch (ExpiredJwtException ex) {
+            throw new RuntimeException("Token expired");
+        } catch (JwtException ex) {
+            throw new RuntimeException("Invalid token");
         }
     }
+    
 
 }

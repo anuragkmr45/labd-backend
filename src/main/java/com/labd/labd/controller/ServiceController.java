@@ -1,5 +1,6 @@
 package com.labd.labd.controller;
 
+import com.labd.labd.dto.res.ServiceResponse;
 import com.labd.labd.entity.ServiceEntity;
 import com.labd.labd.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ public class ServiceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ServiceEntity>> getAllServices() {
+    public ResponseEntity<List<ServiceResponse>> getAllServices() {
         return ResponseEntity.ok(serviceService.getAllServices());
     }
 
     @GetMapping("/{serviceId}")
-    public ResponseEntity<ServiceEntity> getServiceById(@PathVariable Long serviceId) {
+    public ResponseEntity<ServiceResponse> getServiceById(@PathVariable Long serviceId) {
         return ResponseEntity.ok(serviceService.getServiceById(serviceId));
     }
 

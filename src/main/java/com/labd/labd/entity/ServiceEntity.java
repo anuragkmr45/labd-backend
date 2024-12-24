@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @Entity
 @Table(name = "services")
@@ -52,6 +54,7 @@ public class ServiceEntity {
     @Column(name = "discount_percentage", nullable = false)
     private String discountPercentage;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
-    private List<BookingEntity> bookings;
+    private List<BookingEntity> bookings; // Excluded from serialization
 }

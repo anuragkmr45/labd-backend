@@ -1,7 +1,8 @@
 package com.labd.labd.service;
 
-import com.labd.labd.dto.req.AuthRequest;
-import com.labd.labd.dto.res.AuthResponse;
+import com.labd.labd.dto.req.SigninRequest;
+import com.labd.labd.dto.res.SigninResponse;
+import com.labd.labd.dto.res.SignupResponse;
 import com.labd.labd.entity.UserEntity;
 import com.labd.labd.repository.UserRepository;
 import com.labd.labd.util.JwtUtil;
@@ -27,7 +28,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String signup(@Valid String name, String email, String password, String phoneNumber ,String dob, String bloodgrp) {
+    public SignupResponse signup(@Valid String name, String email, String password, String phoneNumber ,String dob, String bloodgrp) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
@@ -41,16 +42,19 @@ public class AuthService {
         user.setBloodgrp(bloodgrp);
         
         userRepository.save(user);
-        return jwtUtil.generateToken(email);
+        String token = jwtUtil.generateToken(email);
+        SignupResponse response = new SignupResponse();
+        response.setToken(token);
+        return response;
     }
 
-    public AuthResponse login(AuthRequest request) {
+    public SigninResponse login(SigninRequest request) {
         UserEntity user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Invalid credentials"));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
         String token = jwtUtil.generateToken(user.getEmail());
-        AuthResponse response = new AuthResponse();
+        SigninResponse response = new SigninResponse();
         response.setToken(token);
         return response;
     }

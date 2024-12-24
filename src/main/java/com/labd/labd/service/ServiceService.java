@@ -1,5 +1,6 @@
 package com.labd.labd.service;
 
+import com.labd.labd.dto.res.ServiceResponse;
 import com.labd.labd.entity.ServiceEntity;
 
 import java.util.List;
@@ -9,8 +10,8 @@ public interface ServiceService {
 
     void updateService(Long serviceId, ServiceEntity updatedService);
 
-    List<ServiceEntity> getAllServices();
-    ServiceEntity getServiceById(Long serviceId);
+    List<ServiceResponse> getAllServices();
+    ServiceResponse getServiceById(Long serviceId);
 
     void deleteService(Long serviceId);
     void deleteAllServices();
