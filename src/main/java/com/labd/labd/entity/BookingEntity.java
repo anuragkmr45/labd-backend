@@ -12,7 +12,7 @@ import java.util.List;
 public class BookingEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id", nullable = false, unique = true)
     private long bookingId;
 

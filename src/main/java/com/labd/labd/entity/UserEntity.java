@@ -53,6 +53,6 @@ public class UserEntity {
     )
     private String bloodgrp;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
     private List<BookingEntity> bookings;
 }

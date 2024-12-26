@@ -46,11 +46,13 @@ public class BookingServiceImpl implements BookingService {
             throw new RuntimeException("At least one service must be selected");
         }
 
+        // Validate services
         List<ServiceEntity> serviceEntities = serviceRepository.findAllById(request.getServices());
         if (serviceEntities.size() != request.getServices().size()) {
-            throw new RuntimeException("One or more services are invalid");
+            throw new RuntimeException("Invalid service IDs: " + request.getServices());
         }
 
+        // Prepare and save booking
         BookingEntity booking = new BookingEntity();
         booking.setUser(user);
         booking.setDate(request.getDate());
@@ -91,35 +93,33 @@ public class BookingServiceImpl implements BookingService {
         return mapToResponseWithServices(booking);
     }
 
+    private BookingResponse mapToResponseWithServices(BookingEntity booking) {
+        BookingResponse response = new BookingResponse();
+        response.setBookingId(booking.getBookingId());
+        response.setUserId(String.valueOf(booking.getUser().getId()));
+        response.setDate(booking.getDate());
+        response.setTime(booking.getTime());
+        response.setReportStatus(booking.getReportStatus().toString());
+        response.setPaymentStatus(booking.getPaymentStatus().toString());
+        response.setCollectionLocation(booking.getCollectionLocation());
 
-private BookingResponse mapToResponseWithServices(BookingEntity booking) {
-    BookingResponse response = new BookingResponse();
-    response.setBookingId(booking.getBookingId());
-    response.setUserId(String.valueOf(booking.getUser().getId()));
-    response.setDate(booking.getDate());
-    response.setTime(booking.getTime());
-    response.setReportStatus(booking.getReportStatus().toString());
-    response.setPaymentStatus(booking.getPaymentStatus().toString());
-    response.setCollectionLocation(booking.getCollectionLocation());
+        // Fetch services and their test parameters
+        List<com.labd.labd.dto.res.ServiceDetails> serviceDetails = booking.getServices().stream().map(service -> {
+            com.labd.labd.dto.res.ServiceDetails details = new com.labd.labd.dto.res.ServiceDetails();
+            details.setServiceName(service.getServiceName());
 
-    // Fetch services and their test parameters
-    List<com.labd.labd.dto.res.ServiceDetails> serviceDetails = booking.getServices().stream().map(service -> {
-        com.labd.labd.dto.res.ServiceDetails details = new com.labd.labd.dto.res.ServiceDetails();
-        details.setServiceName(service.getServiceName());
+            // Fetch test parameters for this service
+            List<String> testParameters = testParameterRepository.findByServiceId(service.getServiceId())
+                    .stream()
+                    .map(TestParameterEntity::getTestParameter)
+                    .collect(Collectors.toList());
+            details.setTestParameters(testParameters);
 
-        // Fetch test parameters for this service
-        List<String> testParameters = testParameterRepository.findByServiceId(service.getServiceId())
-                .stream()
-                .map(TestParameterEntity::getTestParameter)
-                .collect(Collectors.toList());
-        details.setTestParameters(testParameters);
+            return details;
+        }).collect(Collectors.toList());
 
-        return details;
-    }).collect(Collectors.toList());
-
-    response.setServices(serviceDetails);
-    return response;
-}
-
+        response.setServices(serviceDetails);
+        return response;
+    }
 
 }
