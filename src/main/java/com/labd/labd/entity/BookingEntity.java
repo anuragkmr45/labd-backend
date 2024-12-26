@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @Entity
 @Table(name = "bookings")
@@ -18,7 +20,8 @@ public class BookingEntity {
 
     @NotNull(message = "User cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // Foreign key to UserEntity
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private UserEntity user;
 
     @NotEmpty(message = "At least one service must be selected")
